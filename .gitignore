@@ -1,8 +1,10 @@
 # Compiled class file
 *.class
 
-# Log file
+# Logs and temp files
+logs/
 *.log
+*.tmp
 
 # BlueJ files
 *.ctxt
@@ -22,3 +24,36 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Java specific
+.classpath
+.project
+.settings
+bin/
+
+# Maven specific
+target/
+.mvn/
+.mvn/wrapper/maven-wrapper.jar
+dependency-reduced-pom.xml
+
+# Gradle specific
+.gradle/
+build/
+out/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.iml
+*.sublime-*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Other
+*.sw?
+.#*
+*#
+*~

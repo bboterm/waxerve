@@ -19,6 +19,10 @@ public class Main {
             var botToken = config.get("api.key");
             // Register bot
             botsApplication.registerBot(botToken, new WaxerveBot(botToken));
+            // Join current thread
+            Thread.currentThread().join();
+        } catch (InterruptedException _) {
+            Thread.currentThread().interrupt();
         } catch (Exception e) {
             log.error("Registering waxerve-bot failed", e);
         }

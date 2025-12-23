@@ -1,52 +1,57 @@
-<configuration>
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
 
     <!-- Console output -->
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss} %-5level [%thread] %logger - %msg%n</pattern>
-        </encoder>
-    </appender>
+    <Appenders>
 
-    <!-- Rolling file: INFO, WARN, ERROR -->
-    <appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/waxerve_bot.log</file>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} %-5level [%t] %c - %msg%n"/>
+        </Console>
 
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/waxerve_bot-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
+        <!-- Rolling file: INFO, WARN, ERROR -->
+        <RollingFile
+                name="FILE_ALL"
+                fileName="logs/waxerve_bot.log"
+                filePattern="logs/waxerve_bot-%d{yyyy-MM-dd}.log.gz">
 
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger - %msg%n</pattern>
-        </encoder>
-    </appender>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level [%t] %c - %msg%n"/>
 
-    <!-- Rolling file: ERROR only -->
-    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/waxerve_bot.error.log</file>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
 
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/waxerve_bot.error-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
 
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger - %msg%n</pattern>
-        </encoder>
+        <!-- Rolling file: ERROR only -->
+        <RollingFile
+                name="FILE_ERROR"
+                fileName="logs/waxerve_bot.error.log"
+                filePattern="logs/waxerve_bot.error-%d{yyyy-MM-dd}.log.gz">
 
-        <!-- Only accept ERROR-level events -->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level [%t] %c - %msg%n"/>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+
+            <DefaultRolloverStrategy max="30"/>
+
+            <!-- Only accept ERROR-level events -->
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+    </Appenders>
 
     <!-- Root logger -->
-    <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE_ALL"/>
-        <appender-ref ref="FILE_ERROR"/>
-    </root>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE_ALL"/>
+            <AppenderRef ref="FILE_ERROR"/>
+        </Root>
+    </Loggers>
 
-</configuration>
+</Configuration>

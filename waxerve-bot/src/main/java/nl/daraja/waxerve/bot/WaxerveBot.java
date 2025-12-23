@@ -44,6 +44,7 @@ public class WaxerveBot implements LongPollingSingleThreadUpdateConsumer {
 
             // If the bot_command was found
             if (command.isEmpty()) {
+                log.info("No bot command found.");
                 return;
             }
 
@@ -55,6 +56,7 @@ public class WaxerveBot implements LongPollingSingleThreadUpdateConsumer {
             }
 
             // Handle message
+            log.debug("Handling instruction: {}", command.get());
             String response = factory.get().handle(update.getMessage().getText());
 
             // Create your send message object

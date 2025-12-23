@@ -21,7 +21,6 @@
             <artifactId>telegrambots-longpolling</artifactId>
             <version>9.2.0</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.telegram/telegrambots-client -->
         <dependency>
             <groupId>org.telegram</groupId>

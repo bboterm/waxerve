@@ -10,9 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 public class WaxerveBot implements LongPollingSingleThreadUpdateConsumer {
     private static final Logger log = LoggerFactory.getLogger(WaxerveBot.class);
     private final TelegramClient telegramClient;

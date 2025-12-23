@@ -8,6 +8,7 @@ import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
 
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
+    
     // Prevents accidental instantiation
     private Main() {}
 
@@ -19,7 +20,7 @@ public class Main {
             // Register bot
             botsApplication.registerBot(botToken, new WaxerveBot(botToken));
         } catch (Exception e) {
-            log.error("Loading waxerve-bot failed", e);
+            log.error("Registering waxerve-bot failed", e);
         }
     }
 }

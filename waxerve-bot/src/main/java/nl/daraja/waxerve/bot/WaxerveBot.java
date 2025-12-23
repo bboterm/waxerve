@@ -1,9 +1,11 @@
 package nl.daraja.waxerve.bot;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 import nl.daraja.waxerve.bot.handlers.InstructionHandler;
+import nl.daraja.waxerve.bot.handlers.SaxHandler;
 import nl.daraja.waxerve.bot.handlers.TimeHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,7 @@ public class WaxerveBot implements LongPollingSingleThreadUpdateConsumer {
 
     Map<String, Supplier<InstructionHandler>> handlers = Map.of(
             "/hax", TimeHandler::new,
-            "/sax", TimeHandler::new,
+            "/sax", SaxHandler::new,
             "/slap", TimeHandler::new,
             "/time", TimeHandler::new,
             "/wakeup", TimeHandler::new,
@@ -57,16 +59,17 @@ public class WaxerveBot implements LongPollingSingleThreadUpdateConsumer {
 
             // Handle message
             log.debug("Handling instruction: {}", command.get());
-            String response = factory.get().handle(update.getMessage().getText());
+            List<String> response = factory.get().handle(update.getMessage().getText());
 
             // Create your send message object
-            SendMessage sendMessage = new SendMessage(update.getMessage().getChatId().toString(), response);
-            try {
-                // Execute it
-                telegramClient.execute(sendMessage);
-            } catch (TelegramApiException tae) {
-                log.error("Failed to send message", tae);
-            }
+            response.stream().map(s -> new SendMessage(update.getMessage().getChatId().toString(), s))
+                    .forEach(s -> {
+                        try {
+                            telegramClient.execute(s);
+                        } catch (TelegramApiException tae) {
+                            log.error("Failed to send message", tae);
+                        }
+                    });
         }
     }
 }

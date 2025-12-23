@@ -1,5 +1,7 @@
 package nl.daraja.waxerve.bot.handlers;
 
+import java.util.List;
+
 public interface InstructionHandler {
-    String handle(String instruction);
+    List<String> handle(String instruction);
 }

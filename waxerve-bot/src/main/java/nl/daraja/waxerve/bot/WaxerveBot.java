@@ -1,5 +1,8 @@
-package nl.daraja.waxerve;
+package nl.daraja.waxerve.bot;
 
+import nl.daraja.waxerve.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,21 +14,24 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class WaxerveBot implements LongPollingSingleThreadUpdateConsumer {
-    private final TelegramClient telegramClient = new OkHttpTelegramClient("8401355446:AAFsMSLoVT5d1cmf3cKmn8th2VES9Sl5FjA");
+    private static final Logger log = LoggerFactory.getLogger(WaxerveBot.class);
+    private final TelegramClient telegramClient;
+
+    public WaxerveBot(String botToken) {
+        telegramClient = new OkHttpTelegramClient(botToken);
+    }
 
     @Override
     public void consume(Update update) {
         // We check if the update has a message and the message has text
         if (update.hasMessage() && update.getMessage().hasText()) {
             // Create your send message object
-            LocalTime now = LocalTime.now();
-            String message = "The current time is " + now.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-            SendMessage sendMessage = new SendMessage(update.getMessage().getChatId().toString(), message);
+            SendMessage sendMessage = new SendMessage(update.getMessage().getChatId().toString(), update.getMessage().getText());
             try {
                 // Execute it
                 telegramClient.execute(sendMessage);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+            } catch (TelegramApiException tae) {
+                log.error("Failed to send message", tae);
             }
         }
     }

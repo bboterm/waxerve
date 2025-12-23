@@ -42,7 +42,7 @@ public class WaxerveBot implements LongPollingSingleThreadUpdateConsumer {
             Optional<String> command = update.getMessage().getEntities().stream()
                     .filter(e -> "bot_command".equals(e.getType()))
                     .findFirst()
-                    .map(MessageEntity::getText);
+                    .map(e -> e.getText().split("@")[0]);
 
             // If the bot_command was found
             if (command.isEmpty()) {

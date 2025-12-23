@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
-import nl.daraja.waxerve.bot.handlers.InstructionHandler;
-import nl.daraja.waxerve.bot.handlers.SaxHandler;
-import nl.daraja.waxerve.bot.handlers.TimeHandler;
+
+import nl.daraja.waxerve.bot.handlers.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
@@ -22,11 +21,11 @@ public class WaxerveBot implements LongPollingSingleThreadUpdateConsumer {
     private final TelegramClient telegramClient;
 
     Map<String, Supplier<InstructionHandler>> handlers = Map.of(
-            "/hax", TimeHandler::new,
+            "/hax", HaxHandler::new,
             "/sax", SaxHandler::new,
-            "/slap", TimeHandler::new,
+            "/slap", SlapHandler::new,
             "/time", TimeHandler::new,
-            "/wakeup", TimeHandler::new,
+            "/wakeup", WakeupHandler::new,
             "/wax", TimeHandler::new
     );
 

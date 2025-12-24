@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import nl.daraja.waxerve.util.I18n;
 
 public class TimeHandler implements InstructionHandler {
 
@@ -19,14 +20,15 @@ public class TimeHandler implements InstructionHandler {
         // Format it correctly
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         // Add to result
-        result.add("The current time is " + now.format(formatter));
+        result.add(I18n.get("handler.time.current", now.format(formatter)));
 
-        Map<LocalTime, String> alertMap = Map.of(LocalTime.of(13, 37), "OMG! It's 1337!",
-                LocalTime.of(23, 37), "OMG! It's 2337!",
-                LocalTime.of(3, 37), "OMG! It's 0337!",
-                LocalTime.of(3, 14), "OMG! It's π o'clock!");
+        Map<LocalTime, String> alertMap = Map.of(LocalTime.of(13, 37), I18n.get("handler.time.1337"),
+                LocalTime.of(23, 37), I18n.get("handler.time.2337"),
+                LocalTime.of(3, 37), I18n.get("handler.time.0337"),
+                LocalTime.of(3, 14), I18n.get("handler.time.0314"));
 
-        Optional.ofNullable(alertMap.get(now.truncatedTo(ChronoUnit.MINUTES))).ifPresent(result::add);
+        Optional.ofNullable(alertMap.get(now.truncatedTo(ChronoUnit.MINUTES)))
+                .ifPresent(s -> result.add(I18n.get("handler.time.omg", s)));
         return result;
     }
 }

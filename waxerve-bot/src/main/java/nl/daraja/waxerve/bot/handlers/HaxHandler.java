@@ -24,8 +24,6 @@ public class HaxHandler implements InstructionHandler {
         LocalTime now = LocalTime.now();
         // Format it correctly
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        // Add to result
-        result.add("The current time is " + now.format(formatter));
 
         Map<LocalTime, String> alertMap = Map.ofEntries(Map.entry(LocalTime.of(13, 37), I18n.get(HANDLER_TIME_1337)),
                 Map.entry(LocalTime.of(13, 38), I18n.get(HANDLER_TIME_1337)),

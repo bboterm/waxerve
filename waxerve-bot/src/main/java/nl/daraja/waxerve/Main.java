@@ -16,9 +16,11 @@ public class Main {
         try (TelegramBotsLongPollingApplication botsApplication = new TelegramBotsLongPollingApplication()) {
             // Load config
             var config = new Config("config.properties");
+            log.info("Config loaded");
             var botToken = config.get("api.key");
             // Register bot
             botsApplication.registerBot(botToken, new WaxerveBot(botToken));
+            log.info("waxerve-bot started");
             // Join current thread
             Thread.currentThread().join();
         } catch (InterruptedException _) {
@@ -26,5 +28,6 @@ public class Main {
         } catch (Exception e) {
             log.error("Registering waxerve-bot failed", e);
         }
+        log.info("waxerve-bot shutting down");
     }
 }

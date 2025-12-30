@@ -8,7 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import nl.daraja.waxerve.util.I18n;
+import org.apache.commons.lang3.tuple.Pair;
+
 public class HaxHandler implements InstructionHandler {
+    public static final String HANDLER_TIME_1337 = "handler.time.1337";
+    public static final String HANDLER_TIME_2337 = "handler.time.2337";
+    public static final String HANDLER_TIME_0337 = "handler.time.0337";
+    public static final String HANDLER_TIME_0314 = "handler.time.0314";
 
     @Override
     public List<String> handle(String instruction) {
@@ -18,28 +25,28 @@ public class HaxHandler implements InstructionHandler {
         LocalTime now = LocalTime.now();
         // Format it correctly
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        // Add to result
-        result.add("The current time is " + now.format(formatter));
 
-        Map<LocalTime, String> alertMap = Map.ofEntries(Map.entry(LocalTime.of(13, 37), "OMG! It's 1337!"),
-                Map.entry(LocalTime.of(13, 38), "OMG! It's 1337!"),
-                Map.entry(LocalTime.of(13, 39), "OMG! It's 1337!"),
-                Map.entry(LocalTime.of(23, 37), "OMG! It's 2337!"),
-                Map.entry(LocalTime.of(23, 38), "OMG! It's 2337!"),
-                Map.entry(LocalTime.of(23, 39), "OMG! It's 2337!"),
-                Map.entry(LocalTime.of(3, 37), "OMG! It's 0337!"),
-                Map.entry(LocalTime.of(3, 38), "OMG! It's 0337!"),
-                Map.entry(LocalTime.of(3, 39), "OMG! It's 0337!"),
-                Map.entry(LocalTime.of(3, 14), "OMG! It's π o'clock!"),
-                Map.entry(LocalTime.of(3, 15), "OMG! It's π o'clock!"),
-                Map.entry(LocalTime.of(3, 16), "OMG! It's π o'clock!"));
+        Map<LocalTime, Pair<Integer, String>> correctionMap =
+                Map.ofEntries(Map.entry(LocalTime.of(13, 37), Pair.of(0, HANDLER_TIME_1337)),
+                        Map.entry(LocalTime.of(13, 38), Pair.of(-1, HANDLER_TIME_1337)),
+                        Map.entry(LocalTime.of(13, 39), Pair.of(-2, HANDLER_TIME_1337)),
+                        Map.entry(LocalTime.of(23, 37), Pair.of(0, HANDLER_TIME_2337)),
+                        Map.entry(LocalTime.of(23, 38), Pair.of(-1, HANDLER_TIME_2337)),
+                        Map.entry(LocalTime.of(23, 39), Pair.of(-2, HANDLER_TIME_2337)),
+                        Map.entry(LocalTime.of(3, 37), Pair.of(0, HANDLER_TIME_0337)),
+                        Map.entry(LocalTime.of(3, 38), Pair.of(-1, HANDLER_TIME_0337)),
+                        Map.entry(LocalTime.of(3, 39), Pair.of(-2, HANDLER_TIME_0337)),
+                        Map.entry(LocalTime.of(3, 14), Pair.of(0, HANDLER_TIME_0314)),
+                        Map.entry(LocalTime.of(3, 15), Pair.of(-1, HANDLER_TIME_0314)),
+                        Map.entry(LocalTime.of(3, 16), Pair.of(-2, HANDLER_TIME_0314)));
 
-        Optional.ofNullable(alertMap.get(now.truncatedTo(ChronoUnit.MINUTES)))
-                .ifPresentOrElse(s -> {
-                            result.add("The current time is " + now.format(formatter));
-                            result.add(s);
+        Optional.ofNullable(correctionMap.get(now.truncatedTo(ChronoUnit.MINUTES)))
+                .ifPresentOrElse(p -> {
+                            LocalTime correction = now.plusMinutes(p.getLeft());
+                            result.add(I18n.get("handler.time.current", correction.format(formatter)));
+                            result.add(I18n.get("handler.time.omg", I18n.get(p.getRight())));
                         },
-                        () -> result.add("Mama, ze haxen!!1 :(")
+                        () -> result.add(I18n.get("handler.hax.haxen"))
                 );
         return result;
     }

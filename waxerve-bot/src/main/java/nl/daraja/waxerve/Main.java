@@ -1,7 +1,7 @@
 package nl.daraja.waxerve;
 
 import nl.daraja.waxerve.bot.WaxerveBot;
-import nl.daraja.waxerve.config.Config;
+import nl.daraja.waxerve.config.SecretLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
@@ -14,10 +14,9 @@ public class Main {
 
     static void main() {
         try (TelegramBotsLongPollingApplication botsApplication = new TelegramBotsLongPollingApplication()) {
-            // Load config
-            var config = new Config("config.properties");
-            log.info("Config loaded");
-            var botToken = config.get("api.key");
+            // Load API key
+            var botToken = SecretLoader.loadApiKey();
+            log.info("API-key loaded");
             // Register bot
             botsApplication.registerBot(botToken, new WaxerveBot(botToken));
             log.info("waxerve-bot started");

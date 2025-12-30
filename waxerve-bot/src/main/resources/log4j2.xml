@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <!-- Console output -->
+    <Appenders>
+
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} %-5level [%t] %c - %msg%n"/>
+        </Console>
+
+        <!-- Rolling file: INFO, WARN, ERROR -->
+        <RollingFile
+                name="FILE_ALL"
+                fileName="logs/waxerve_bot.log"
+                filePattern="logs/waxerve_bot-%d{yyyy-MM-dd}.log.gz">
+
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level [%t] %c - %msg%n"/>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+        <!-- Rolling file: ERROR only -->
+        <RollingFile
+                name="FILE_ERROR"
+                fileName="logs/waxerve_bot.error.log"
+                filePattern="logs/waxerve_bot.error-%d{yyyy-MM-dd}.log.gz">
+
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level [%t] %c - %msg%n"/>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+
+            <DefaultRolloverStrategy max="30"/>
+
+            <!-- Only accept ERROR-level events -->
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
+    </Appenders>
+
+    <!-- Root logger -->
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE_ALL"/>
+            <AppenderRef ref="FILE_ERROR"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

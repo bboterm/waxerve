@@ -16,7 +16,7 @@ public class Main {
         try (TelegramBotsLongPollingApplication botsApplication = new TelegramBotsLongPollingApplication()) {
             // Load API key
             var botToken = SecretLoader.loadApiKey();
-            log.info("API-key loaded");
+            log.info("Loaded API key: {}********", botToken.substring(0, 4));
             // Register bot
             botsApplication.registerBot(botToken, new WaxerveBot(botToken));
             log.info("waxerve-bot started");

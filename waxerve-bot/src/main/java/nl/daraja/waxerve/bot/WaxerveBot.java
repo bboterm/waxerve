@@ -22,6 +22,7 @@ public class WaxerveBot implements LongPollingSingleThreadUpdateConsumer {
 
     Map<String, Supplier<InstructionHandler>> handlers = Map.of(
             "/hax", HaxHandler::new,
+            "/kaq", KaqHandler::new,
             "/sax", SaxHandler::new,
             "/slap", SlapHandler::new,
             "/time", TimeHandler::new,
